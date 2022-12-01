@@ -3,17 +3,25 @@ defmodule Day1 do
     "../assets/#{file_path}"
     |> Path.expand(__DIR__)
     |> File.read!()
-    |> String.split(~r/\n\n/, trim: true)
   end
 
-  def get_result(file_path) do
+  def get_gnomes(file_path) do
       read_input(file_path)
-      |> Enum.map(fn gnome -> String.split(gnome, ~r/\n/, trim: true) end)
+      |> String.split(~r/\n\n/, trim: true)
+      |> Enum.map(&String.split(&1, ~r/\n/, trim: true))
       |> Enum.map(fn gnome -> Enum.map(gnome, &String.to_integer/1) end)
-      |> Enum.map(fn gnome -> Enum.sum(gnome) end)
+      |> Enum.map(&Enum.sum/1)
   end
 
   def get_highest(result) do
     result |> Enum.max()
+  end
+
+  def get_three_highest_sum(gnomes) do
+    gnomes
+    |> Enum.sort()
+    |> Enum.reverse()
+    |> Enum.slice(0..2)
+    |> Enum.sum
   end
 end
