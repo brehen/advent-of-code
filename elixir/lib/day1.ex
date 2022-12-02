@@ -1,4 +1,4 @@
-defmodule Day1 do
+defmodule AOC.Day1 do
   def read_input(file_path) do
     "../assets/#{file_path}"
     |> Path.expand(__DIR__)
