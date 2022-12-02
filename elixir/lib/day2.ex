@@ -14,6 +14,10 @@ defmodule AOC.Day2 do
     "scissors" => "paper"
   }
 
+  # Inverse the win-map to determine how to lose
+  @loses Map.new(@beats, fn { key, val } -> { val, key } end)
+
+
   @values %{
     "rock" => 1,
     "paper" => 2,
@@ -26,6 +30,15 @@ defmodule AOC.Day2 do
     |> File.read!()
   end
 
+  defp get_move(key), do: Map.get(@moves, key)
+
+  def get_mapped_moves([elf, me]), do: [get_move(elf), get_move(me)]
+
+  def get_moves(rounds) do
+    rounds
+    |> Enum.map(&get_mapped_moves(&1))
+  end
+
   def get_rounds(file_path) do
       read_input(file_path)
       |> String.split(~r/\n/, trim: true)
@@ -34,14 +47,32 @@ defmodule AOC.Day2 do
         |> String.split(~r/\n/, trim: true)
         |> Enum.flat_map(&String.split(&1, " ", trim: true))
       end)
-      |> Enum.map(&get_mapped_moves(&1))
   end
 
-  def get_mapped_moves([elf, me]), do: [Map.get(@moves, elf), Map.get(@moves, me)]
-
-  def get_moves(rounds) do
+  def get_mapped_rounds_1(rounds) do
     rounds
-    |> Enum.map(&get_mapped_moves(&1))
+    |> Enum.map(&get_mapped_moves/1)
+  end
+
+  def get_mapped_rounds_2(rounds) do
+    rounds
+    |> Enum.map(&get_move_from_strat/1)
+  end
+
+
+  # Lose
+  defp get_move_from_strat([elf, "X"]) do
+    elf_move = get_move(elf)
+    [elf_move, Map.get(@beats, elf_move)]
+  end
+
+  # Draw
+  defp get_move_from_strat([elf, "Y"]), do: [get_move(elf), get_move(elf)]
+
+  # Win
+  defp get_move_from_strat([elf, "Z"]) do
+    elf_move = get_move(elf)
+    [elf_move, Map.get(@loses, elf_move)]
   end
 
   def get_score_from_round([elf, me]) do
@@ -59,10 +90,9 @@ defmodule AOC.Day2 do
   defp determine_outcome([elf_move, my_move]) when elf_move == my_move, do: :draw
   defp determine_outcome([elf_move, my_move]) do
     elf_wins = Map.get(@beats, elf_move) == my_move
-    if elf_wins do
-      :lose
-    else
-      :win
+    case elf_wins do
+      true -> :lose
+      false -> :win
     end
   end
 end

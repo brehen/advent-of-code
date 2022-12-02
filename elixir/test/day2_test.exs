@@ -9,6 +9,7 @@ defmodule AOC.Day2Test do
 
   test "interprets simple input correctly" do
     Day2.get_rounds(@simple)
+    |> Day2.get_mapped_rounds_1
     |> assert_lists_equal([["rock", "paper"], ["paper", "rock"], ["scissors", "scissors"]])
   end
 
@@ -44,6 +45,7 @@ defmodule AOC.Day2Test do
 
   test "Outcome of round gives correct score" do
     rounds = Day2.get_rounds(@simple)
+    |> Day2.get_mapped_rounds_1
     |> Enum.map(&Day2.get_score_from_round/1)
     |> Enum.sum
 
@@ -52,11 +54,18 @@ defmodule AOC.Day2Test do
 
   test "returns correct for larger set as well" do
     rounds = Day2.get_rounds(@complex)
+    |> Day2.get_mapped_rounds_1
     |> Enum.map(&Day2.get_score_from_round/1)
     |> Enum.sum
     assert rounds == 13268
   end
 
-  test "" do
+  test "but there was a twist" do
+    rounds = Day2.get_rounds(@complex)
+    |> Day2.get_mapped_rounds_2
+    |> Enum.map(&Day2.get_score_from_round/1)
+    |> Enum.sum
+
+    assert rounds == 15508
   end
 end
