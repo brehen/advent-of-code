@@ -27,3 +27,5 @@ day1-*.tar
 
 elixir/day1/_build
 elixir/day1/deps
+elixir/_build
+elixir/deps
