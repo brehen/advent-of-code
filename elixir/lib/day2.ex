@@ -63,7 +63,8 @@ defmodule AOC.Day2 do
   # Lose
   defp get_move_from_strat([elf, "X"]) do
     elf_move = get_move(elf)
-    [elf_move, Map.get(@beats, elf_move)]
+    losing_move = Map.get(@beats, elf_move)
+    [elf_move, losing_move]
   end
 
   # Draw
@@ -72,16 +73,16 @@ defmodule AOC.Day2 do
   # Win
   defp get_move_from_strat([elf, "Z"]) do
     elf_move = get_move(elf)
-    [elf_move, Map.get(@loses, elf_move)]
+    winning_move = Map.get(@loses, elf_move)
+    [elf_move, winning_move]
   end
 
   def get_score_from_round([elf, me]) do
     result = determine_outcome([elf, me])
     score = case result do
       :win -> 6
-      :lose -> 0
       :draw -> 3
-      _ -> 0
+      :lose -> 0
     end
 
     score + Map.get(@values, me)
