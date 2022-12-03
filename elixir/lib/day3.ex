@@ -23,12 +23,30 @@ defmodule AOC.Day3 do
     end)
   end
 
+  def get_rucksack_groups(file_path) do
+    file_path
+    |> read_input()
+    |> String.split(~r/\n/, trim: true)
+    |> Enum.chunk_every(3)
+  end
+
   def get_common_item_type(rucksack) do
     rucksack
     |> Enum.map(fn [left, right] ->
       [common | _] = left
       |> String.codepoints()
       |> Enum.filter(&String.contains?(right, &1))
+      common
+    end)
+  end
+
+  def get_common_item_type_across_group(rucksacks) do
+    rucksacks
+    |> Enum.map(fn [one, two, three] ->
+      [common | _] = one
+      |> String.codepoints()
+      |> Enum.filter(&String.contains?(two, &1))
+      |> Enum.filter(&String.contains?(three, &1))
       common
     end)
   end

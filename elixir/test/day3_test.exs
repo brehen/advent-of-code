@@ -41,13 +41,28 @@ defmodule AOC.Day3Test do
   end
 
   test "find sum from complex input" do
-    @complex
+    assert 7848 == @complex
     |> Day3.get_compartments
     |> Day3.get_common_item_type
     |> Enum.map(&Day3.get_priority_value/1)
     |> Enum.sum
-    |> IO.inspect
   end
 
+  # Part two
 
+  test "determine common items and their points for each group" do
+    assert 70 == @simple
+    |> Day3.get_rucksack_groups
+    |> Day3.get_common_item_type_across_group
+    |> Enum.map(&Day3.get_priority_value/1)
+    |> Enum.sum
+  end
+
+  test "determine common items and their points for each group in complex" do
+    assert 2616 == @complex
+    |> Day3.get_rucksack_groups
+    |> Day3.get_common_item_type_across_group
+    |> Enum.map(&Day3.get_priority_value/1)
+    |> Enum.sum
+  end
 end
