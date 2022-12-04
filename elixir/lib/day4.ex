@@ -27,4 +27,10 @@ defmodule AOC.Day4 do
       end
     end)
   end
+  def get_range_in_other_at_all(result) do
+    result
+    |> Enum.filter(fn [a1..a2, b1..b2] ->
+      !(a2 < b1 or a1 > b2)
+    end)
+  end
 end

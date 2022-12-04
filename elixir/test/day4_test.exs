@@ -33,4 +33,19 @@ defmodule AOC.Day4Test do
       |> Day4.get_range_in_other
       |> length
   end
+
+  test "finds ranges that overlap at all" do
+    assert 4 ==
+      @simple
+      |> Day4.get_assignments
+      |> Day4.get_range_in_other_at_all
+      |> length
+  end
+  test "finds ranges that overlap at all in complex" do
+    assert 907 ==
+      @complex
+      |> Day4.get_assignments
+      |> Day4.get_range_in_other_at_all
+      |> length
+  end
 end
