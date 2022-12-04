@@ -1,23 +1,30 @@
 defmodule AOC.Day4 do
   import AOC.Utils, only: [read_input: 1]
 
-  def get_gnomes(file_path) do
-    read_input(file_path)
-    |> String.split(~r/\n\n/, trim: true)
-    |> Enum.map(&String.split(&1, ~r/\n/, trim: true))
-    |> Enum.map(fn gnome -> Enum.map(gnome, &String.to_integer/1) end)
-    |> Enum.map(&Enum.sum/1)
+  defp pair_to_range([a, b]) do
+    Range.new(String.to_integer(a), String.to_integer(b))
   end
 
-  def get_highest(result) do
-    result |> Enum.max()
+  def get_assignments(file_path) do
+    file_path
+    |> read_input()
+    |> String.split(~r/\n/, trim: true)
+    |> Enum.map(fn line ->
+      line
+      |> String.split(~r/,/, trim: true)
+      |> Enum.map(&String.split(&1, "-", trim: true))
+      |> Enum.map(&pair_to_range/1)
+    end)
   end
 
-  def get_three_highest_sum(gnomes) do
-    gnomes
-    |> Enum.sort()
-    |> Enum.reverse()
-    |> Enum.slice(0..2)
-    |> Enum.sum()
+  def get_range_in_other(result) do
+    result
+    |> Enum.filter(fn [a1..a2, b1..b2] ->
+      cond do
+        a1 >= b1 and a2 <= b2 -> true
+        b1 >= a1 and b2 <= a2 -> true
+        true -> false
+      end
+    end)
   end
 end
