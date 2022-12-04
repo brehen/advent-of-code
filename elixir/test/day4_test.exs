@@ -7,45 +7,44 @@ defmodule AOC.Day4Test do
   @simple "day4/simple_input.txt"
   @complex "day4/complex_input.txt"
 
-
   test "splits input correctly" do
-    [first_pair, second_pair | _] = 
+    [first_pair, second_pair | _] =
       @simple
-      |> Day4.get_assignments
+      |> Day4.get_assignments()
 
     assert_lists_equal(first_pair, [2..4, 6..8])
     assert_lists_equal(second_pair, [2..3, 4..5])
   end
 
   test "able to determine if one range fully contains the other" do
-    assert 2 == 
-      @simple
-      |> Day4.get_assignments
-      |> Day4.get_range_in_other
-      |> length
+    assert 2 ==
+             @simple
+             |> Day4.get_assignments()
+             |> Day4.get_range_in_other()
+             |> length
   end
 
-
   test "finds right amount of ranges in others in complex" do
-    assert 567 == 
-      @complex
-      |> Day4.get_assignments
-      |> Day4.get_range_in_other
-      |> length
+    assert 567 ==
+             @complex
+             |> Day4.get_assignments()
+             |> Day4.get_range_in_other()
+             |> length
   end
 
   test "finds ranges that overlap at all" do
     assert 4 ==
-      @simple
-      |> Day4.get_assignments
-      |> Day4.get_range_in_other_at_all
-      |> length
+             @simple
+             |> Day4.get_assignments()
+             |> Day4.get_range_in_other_at_all()
+             |> length
   end
+
   test "finds ranges that overlap at all in complex" do
     assert 907 ==
-      @complex
-      |> Day4.get_assignments
-      |> Day4.get_range_in_other_at_all
-      |> length
+             @complex
+             |> Day4.get_assignments()
+             |> Day4.get_range_in_other_at_all()
+             |> length
   end
 end
