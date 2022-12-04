@@ -1,9 +1,5 @@
 defmodule AOC.Day3 do
-  def read_input(file_path) do
-    "../assets/#{file_path}"
-    |> Path.expand(__DIR__)
-    |> File.read!()
-  end
+  import AOC.Utils, only: [read_input: 1]
 
   def split(list) do
     len = round(length(list) / 2)
@@ -33,9 +29,11 @@ defmodule AOC.Day3 do
   def get_common_item_type(rucksack) do
     rucksack
     |> Enum.map(fn [left, right] ->
-      [common | _] = left
-      |> String.codepoints()
-      |> Enum.filter(&String.contains?(right, &1))
+      [common | _] =
+        left
+        |> String.codepoints()
+        |> Enum.filter(&String.contains?(right, &1))
+
       common
     end)
   end
@@ -43,15 +41,17 @@ defmodule AOC.Day3 do
   def get_common_item_type_across_group(rucksacks) do
     rucksacks
     |> Enum.map(fn [one, two, three] ->
-      [common | _] = one
-      |> String.codepoints()
-      |> Enum.filter(&String.contains?(two, &1))
-      |> Enum.filter(&String.contains?(three, &1))
+      [common | _] =
+        one
+        |> String.codepoints()
+        |> Enum.filter(&String.contains?(two, &1))
+        |> Enum.filter(&String.contains?(three, &1))
+
       common
     end)
   end
 
-  def get_priority_value(item) do 
+  def get_priority_value(item) do
     [point] = String.to_charlist(item)
 
     case point do
@@ -59,5 +59,4 @@ defmodule AOC.Day3 do
       point -> point - 38
     end
   end
-
 end
