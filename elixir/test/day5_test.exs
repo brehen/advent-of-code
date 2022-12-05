@@ -60,7 +60,9 @@ defmodule AOC.Day5Test do
 
     [move1, move2, move3, move4] = moves
 
-    crane_1 = {crane, move1} |> Day5.perform_move()
+    v = :v9000
+
+    crane_1 = {crane, move1} |> Day5.perform_move(v)
 
     [crane_1_1, crane_1_2, crane_1_3] = crane_1
     # , "1"])
@@ -70,7 +72,7 @@ defmodule AOC.Day5Test do
     # , "3"])
     assert_lists_equal(crane_1_3, ["P"])
 
-    crane_2 = {crane_1, move2} |> Day5.perform_move()
+    crane_2 = {crane_1, move2} |> Day5.perform_move(v)
     [crane_2_1, crane_2_2, crane_2_3] = crane_2
     # "1"])
     assert_lists_equal(crane_2_1, [])
@@ -79,7 +81,7 @@ defmodule AOC.Day5Test do
     # , "3"])
     assert_lists_equal(crane_2_3, ["Z", "N", "D", "P"])
 
-    crane_3 = {crane_2, move3} |> Day5.perform_move()
+    crane_3 = {crane_2, move3} |> Day5.perform_move(v)
     [crane_3_1, crane_3_2, crane_3_3] = crane_3
     # , "1"])
     assert_lists_equal(crane_3_1, ["M", "C"])
@@ -88,7 +90,7 @@ defmodule AOC.Day5Test do
     # , "3"])
     assert_lists_equal(crane_3_3, ["Z", "N", "D", "P"])
 
-    crane_4 = {crane_3, move4} |> Day5.perform_move()
+    crane_4 = {crane_3, move4} |> Day5.perform_move(v)
     [crane_4_1, crane_4_2, crane_4_3] = crane_4
     # , "1"])
     assert_lists_equal(crane_4_1, ["C"])
@@ -109,7 +111,70 @@ defmodule AOC.Day5Test do
              @complex
              |> Day5.get_input_parts()
              |> Day5.parse_input_parts()
-             |> Day5.perform_moves()
+             |> Day5.perform_moves(:v9000)
+             |> Enum.map(&Enum.at(&1, 0))
+             |> Enum.join()
+  end
+
+  test "performs movements correctly, even with 9001" do
+    {crane, moves} =
+      @simple
+      |> Day5.get_input_parts()
+      |> Day5.parse_input_parts()
+
+    v = :v9001
+    [move1, move2, move3, move4] = moves
+
+    crane_1 = {crane, move1} |> Day5.perform_move(v)
+
+    [crane_1_1, crane_1_2, crane_1_3] = crane_1
+    # , "1"])
+    assert_lists_equal(crane_1_1, ["D", "N", "Z"])
+    # , "2"])
+    assert_lists_equal(crane_1_2, ["C", "M"])
+    # , "3"])
+    assert_lists_equal(crane_1_3, ["P"])
+
+    crane_2 = {crane_1, move2} |> Day5.perform_move(v)
+    [crane_2_1, crane_2_2, crane_2_3] = crane_2
+    # "1"])
+    assert_lists_equal(crane_2_1, [])
+    # , "2"])
+    assert_lists_equal(crane_2_2, ["C", "M"])
+    # , "3"])
+    assert_lists_equal(crane_2_3, ["D", "N", "Z", "P"])
+
+    crane_3 = {crane_2, move3} |> Day5.perform_move(v)
+    [crane_3_1, crane_3_2, crane_3_3] = crane_3
+    # , "1"])
+    assert_lists_equal(crane_3_1, ["M", "C"])
+    # "2"])
+    assert_lists_equal(crane_3_2, [])
+    # , "3"])
+    assert_lists_equal(crane_3_3, ["Z", "N", "D", "P"])
+
+    crane_4 = {crane_3, move4} |> Day5.perform_move(v)
+    [crane_4_1, crane_4_2, crane_4_3] = crane_4
+    # , "1"])
+    assert_lists_equal(crane_4_1, ["M"])
+    # , "2"])
+    assert_lists_equal(crane_4_2, ["C"])
+    # , "3"])
+    assert_lists_equal(crane_4_3, ["Z", "N", "D", "P"])
+
+    [one | _] = crane_4_1
+    [two | _] = crane_4_2
+    [three | _] = crane_4_3
+
+    assert one <> two <> three == "MCD"
+  end
+
+  test "finds complex value with 9001" do
+    assert "PGSQBFLDP" ==
+             @complex
+             |> Day5.get_input_parts()
+             |> Day5.parse_input_parts()
+             |> Day5.perform_moves(:v9001)
              |> Enum.map(&Enum.at(&1, 0))
              |> Enum.join()
   end

@@ -41,11 +41,27 @@ defmodule AOC.Day5 do
       parse_movements(moves)
     }
 
-  def perform_move({crane, [0, _from, _to]}) do
+  def perform_move({crane, [move, from, to]}, :v9001) do
+    from_at = Enum.at(crane, from - 1)
+    to_at = Enum.at(crane, to - 1)
+
+    new_from = Enum.slice(from_at, Range.new(move, length(from_at)))
+    into_to = Enum.slice(from_at, Range.new(0, move - 1))
+
+    new_to = [into_to | to_at] |> List.flatten()
+
     crane
+    |> Enum.with_index(1)
+    |> Enum.map(fn
+      {_, ^from} -> new_from
+      {_, ^to} -> new_to
+      {x, _} -> x
+    end)
   end
 
-  def perform_move({crane, [move, from, to]}) do
+  def perform_move({crane, [0, _from, _to]}, _), do: crane
+
+  def perform_move({crane, [move, from, to]}, v) do
     [from_at | new_from] = Enum.at(crane, from - 1)
     to_at = Enum.at(crane, to - 1)
     new_to = [from_at | to_at]
@@ -59,13 +75,13 @@ defmodule AOC.Day5 do
         {x, _} -> x
       end)
 
-    perform_move({crane, [move - 1, from, to]})
+    perform_move({crane, [move - 1, from, to]}, v)
   end
 
-  def perform_moves({crane, []}), do: crane
+  def perform_moves({crane, []}, _), do: crane
 
-  def perform_moves({crane, [move | moves]}) do
-    crane = perform_move({crane, move})
-    perform_moves({crane, moves})
+  def perform_moves({crane, [move | moves]}, version) do
+    crane = perform_move({crane, move}, version)
+    perform_moves({crane, moves}, version)
   end
 end
