@@ -29,3 +29,4 @@ elixir/day1/_build
 elixir/day1/deps
 elixir/_build
 elixir/deps
+.elixir_ls/elixir.nvim/downloads/mhanberg/elixir-ls/mh_all-workspace-symbols
