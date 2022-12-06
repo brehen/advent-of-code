@@ -4,13 +4,28 @@ defmodule AOC.Day6Test do
   alias AOC.Day6
   doctest Day6
 
-  @simple "day4/simple_input.txt"
-  @complex "day4/complex_input.txt"
+  @simple "day6/simple_input.txt"
+  @complex "day6/complex_input.txt"
 
-  test "Sums the correct amount per elf in simple input" do
+  test "Finds marker correctly" do
+    markers = [
+      {"mjqjpqmgbljsphdztnvjfqwrcgsmlb", 7},
+      {"bvwbjplbgvbhsrlpgdmjqwftvncz", 5},
+      {"nppdvjthqldpwncqszvftbrmjlhg", 6},
+      {"nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 10},
+      {"zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 11}
+    ]
+
+    for {marker, expected} <- markers do
+      assert Day6.get_marker(marker) == expected
+    end
   end
 
-  test "finds largest in big text" do
+  test "finds marker in complex input" do
+    assert 1542 ==
+             @complex
+             |> Day6.read_marker()
+             |> Day6.get_marker()
   end
 
   test "find sum of largest three in big text" do
