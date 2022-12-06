@@ -6,29 +6,25 @@ defmodule AOC.Day6 do
     |> String.replace(~r/\n/, "")
   end
 
-  def get_marker(packet) do
-    packet =
-      packet
-      |> String.split("", trim: true)
+  def get_marker(packet, target_size) do
+    split_packet = String.split(packet, "", trim: true)
 
-    packet
-    |> Enum.slice(0..3)
-    |> get_marker(packet, 4)
+    split_packet
+    |> Enum.slice(Range.new(0, target_size - 1))
+    |> get_marker(split_packet, target_size, target_size)
   end
 
-  def get_marker(slice, packet, value) do
-    IO.inspect({slice, packet})
-
+  def get_marker(slice, packet, value, target_size) do
     packet_size =
       slice
       |> Enum.uniq()
       |> length
 
     # If packet doesn't contain 4 unique characters
-    if packet_size < 4 do
+    if packet_size < target_size do
       packet
-      |> Enum.slice(Range.new(value - 3, value))
-      |> get_marker(packet, value + 1)
+      |> Enum.slice(Range.new(value - target_size + 1, value))
+      |> get_marker(packet, value + 1, target_size)
     else
       value
     end

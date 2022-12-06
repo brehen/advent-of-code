@@ -1,10 +1,8 @@
 defmodule AOC.Day6Test do
   use ExUnit.Case
-  import Assertions, only: [assert_lists_equal: 2]
   alias AOC.Day6
   doctest Day6
 
-  @simple "day6/simple_input.txt"
   @complex "day6/complex_input.txt"
 
   test "Finds marker correctly" do
@@ -17,7 +15,7 @@ defmodule AOC.Day6Test do
     ]
 
     for {marker, expected} <- markers do
-      assert Day6.get_marker(marker) == expected
+      assert Day6.get_marker(marker, 4) == expected
     end
   end
 
@@ -25,9 +23,13 @@ defmodule AOC.Day6Test do
     assert 1542 ==
              @complex
              |> Day6.read_marker()
-             |> Day6.get_marker()
+             |> Day6.get_marker(4)
   end
 
-  test "find sum of largest three in big text" do
+  test "finds marker in compelex input with 14 length" do
+    assert 3153 ==
+             @complex
+             |> Day6.read_marker()
+             |> Day6.get_marker(14)
   end
 end
