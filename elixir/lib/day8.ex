@@ -12,6 +12,77 @@ defmodule AOC.Day8 do
     end)
   end
 
+  defp get_columns(tree_lines), do: tree_lines |> List.zip() |> Enum.map(&Tuple.to_list/1)
+  defp get_tree_rows(tree_lines), do: tree_lines |> Enum.with_index()
+
+  def get_scenic_scores(tree_lines) do
+    columns = get_columns(tree_lines)
+
+    tree_lines
+    |> get_tree_rows()
+    |> Enum.map(fn
+      {row, row_index} ->
+        row
+        |> Enum.with_index()
+        |> Enum.map(fn {tree_height, column_index} ->
+          column = Enum.at(columns, column_index)
+          get_score_of_tree(tree_height, row_index, column_index, row, column)
+        end)
+    end)
+  end
+
+  defp get_direction(list, range) do
+    list
+    |> Enum.slice(range)
+  end
+
+  def get_direction_score(sliced, height) do
+    {_, score} =
+      sliced
+      |> Enum.find(fn {tree_height, indx} ->
+        tree_height >= height or indx == length(sliced)
+      end)
+
+    score
+  end
+
+  def get_score_of_tree(_height, 0, _column_index, _row_, _column), do: 0
+  def get_score_of_tree(_height, _row_index, 0, _row, _column), do: 0
+
+  def get_score_of_tree(_height, row_index, column_index, row, column)
+      when row_index == length(row) - 1 or column_index == length(column) - 1,
+      do: 0
+
+  def get_score_of_tree(tree_height, row_index, column_index, row, column) do
+    up_score =
+      column
+      |> get_direction(Range.new(0, row_index - 1))
+      |> Enum.reverse()
+      |> Enum.with_index(1)
+      |> get_direction_score(tree_height)
+
+    left_score =
+      row
+      |> get_direction(Range.new(0, column_index - 1))
+      |> Enum.reverse()
+      |> Enum.with_index(1)
+      |> get_direction_score(tree_height)
+
+    right_score =
+      row
+      |> get_direction(Range.new(column_index + 1, -1))
+      |> Enum.with_index(1)
+      |> get_direction_score(tree_height)
+
+    down_score =
+      column
+      |> get_direction(Range.new(row_index + 1, -1))
+      |> Enum.with_index(1)
+      |> get_direction_score(tree_height)
+
+    left_score * right_score * up_score * down_score
+  end
+
   def get_visible(tree_lines) do
     # loop over each row
     # for each column in row:
@@ -20,16 +91,12 @@ defmodule AOC.Day8 do
     #      If row_index === 0 || length(tree_lines): yes
     #      If item[index] is higher than all in row: yes
     #      If item[index] is higher than all in column: yes
-    columns =
-      tree_lines
-      |> List.zip()
-      |> Enum.map(&Tuple.to_list/1)
+    columns = get_columns(tree_lines)
 
     tree_line_length = length(tree_lines) - 1
 
     tree_lines
-    |> Stream.with_index()
-    |> Enum.to_list()
+    |> get_tree_rows()
     |> Enum.reduce([], fn
       {row, 0}, _acc ->
         row
