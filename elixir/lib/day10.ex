@@ -30,4 +30,30 @@ defmodule AOC.Day10 do
     |> Enum.map(&(Enum.at(cycles, &1 - 1) * &1))
     |> Enum.sum()
   end
+
+  def draw_output(cycles) do
+    Range.new(0, length(cycles) - 1)
+    |> Enum.reduce([], fn
+      pixel, acc when pixel == length(cycles) - 1 ->
+        ["\n" | acc]
+
+      pixel, acc ->
+        curr_cycle = Enum.at(cycles, pixel)
+        cycle_pos = Range.new(curr_cycle - 1, curr_cycle + 1)
+
+        # add new line, in case we jumped to new row
+        acc =
+          if rem(pixel, 40) == 0 and pixel > 0,
+            do: ["\n" | acc],
+            else: acc
+
+        if rem(pixel, 40) in cycle_pos do
+          ["#" | acc]
+        else
+          ["." | acc]
+        end
+    end)
+    |> Enum.reverse()
+    |> Enum.join()
+  end
 end

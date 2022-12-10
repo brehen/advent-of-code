@@ -55,4 +55,40 @@ defmodule AOC.Day10Test do
              |> Day10.do_instructions()
              |> Day10.get_signal_strengths([20, 60, 100, 140, 180, 220])
   end
+
+  test "draws correctly" do
+    expected_output = """
+    ##..##..##..##..##..##..##..##..##..##..
+    ###...###...###...###...###...###...###.
+    ####....####....####....####....####....
+    #####.....#####.....#####.....#####.....
+    ######......######......######......####
+    #######.......#######.......#######.....
+    """
+
+    simple =
+      @simple
+      |> Day10.get_instructions()
+      |> Day10.do_instructions()
+      |> Day10.draw_output()
+
+    assert simple == expected_output
+
+    complex =
+      @complex
+      |> Day10.get_instructions()
+      |> Day10.do_instructions()
+      |> Day10.draw_output()
+
+    expected_complex = """
+    ###..####.####.#..#.####.####.#..#..##..
+    #..#....#.#....#.#..#....#....#..#.#..#.
+    #..#...#..###..##...###..###..####.#..#.
+    ###...#...#....#.#..#....#....#..#.####.
+    #.#..#....#....#.#..#....#....#..#.#..#.
+    #..#.####.####.#..#.####.#....#..#.#..#.
+    """
+
+    assert expected_complex == complex
+  end
 end
