@@ -10,3 +10,4 @@ itertools = { workspace = true }
 nom = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
+regex = { workspace = true }
