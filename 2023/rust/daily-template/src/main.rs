@@ -2,10 +2,12 @@ fn main() {
     println!("Hello AOC!");
 }
 
+#[allow(dead_code)]
 fn part1() {
     todo!("Solve part 1");
 }
 
+#[allow(dead_code)]
 fn part2() {
     todo!("Solve part 2");
 }
