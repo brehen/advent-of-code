@@ -3,4 +3,4 @@ create day:
 work day part:
     cargo watch -x "check -p {{day}}" -s "just test {{part}} -p {{day}}"
 test part +FLAGS='-p day-01':
-    cargo nextest run {{FLAGS}} {{part}}
+    cargo nextest run {{FLAGS}} {{part}} --nocapture
